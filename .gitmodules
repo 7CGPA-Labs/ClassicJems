@@ -1,0 +1,7 @@
+[submodule "third_party/eka2l1"]
+	path = third_party/eka2l1
+	url = https://github.com/EKA2L1/EKA2L1.git
+
+[submodule "third_party/freej2me"]
+	path = third_party/freej2me
+	url = https://github.com/bazat/freej2me.git

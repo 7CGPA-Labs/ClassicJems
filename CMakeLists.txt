@@ -23,9 +23,6 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         RESULT_VARIABLE GIT_SUBMODULE_RESULT
     )
-    if(NOT GIT_SUBMODULE_RESULT EQUAL 0)
-        message(WARNING "Automatic submodule setup failed. Cores may need manual updating.")
-    endif()
 endif()
 
 # ==========================================
