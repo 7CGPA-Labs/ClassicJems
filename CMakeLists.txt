@@ -16,13 +16,22 @@ set(CMAKE_AUTORCC ON)
 # AUTOMATIC SUBMODULE CORE INITIALIZATION
 # ==========================================
 find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    message(STATUS "Checking dependencies inside submodule repositories...")
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        RESULT_VARIABLE GIT_SUBMODULE_RESULT
-    )
+if(GIT_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+    # Only run submodule update if target engine directories are empty/missing
+    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/eka2l1/CMakeLists.txt" OR 
+       NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/freej2me/CMakeLists.txt")
+        message(STATUS "Third-party engine submodules are missing. Initializing submodules...")
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE GIT_SUBMODULE_RESULT
+        )
+        if(NOT GIT_SUBMODULE_RESULT EQUAL 0)
+            message(WARNING "Failed to automatically initialize git submodules. Please run 'git submodule update --init --recursive' manually.")
+        else()
+            message(STATUS "Submodules initialized successfully.")
+        endif()
+    endif()
 endif()
 
 # ==========================================
@@ -42,6 +51,8 @@ set(SOURCES
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.h
+    src/gamelibrarywidget.cpp
+    src/gamelibrarywidget.h
 )
 
 # Define the primary compilation build target payload
@@ -71,8 +82,15 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Widgets
     Qt6::Gui
     Qt6::OpenGLWidgets
-    SDL2::SDL2
 )
+
+# Handle cases where the target SDL2::SDL2 might not be defined by older CMake FindSDL2 modules
+if(TARGET SDL2::SDL2)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2)
+else()
+    target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
+endif()
 
 # ==========================================
 # 5. SUBMODULE COMPILATION TARGET HOOKS
