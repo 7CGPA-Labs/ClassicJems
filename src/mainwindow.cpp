@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), m_isGameRunning(false) {
     // Force a classic vertical smartphone aspect ratio on desktop window initialization
     setFixedSize(450, 800); 
-    setWindowTitle("RetroFuse Emulator (Qt6)");
+    setWindowTitle("ClassicJems Emulator (Qt6)");
 
     m_stackedWidget = new QStackedWidget(this);
     m_libraryWidget = new GameLibraryWidget(this);

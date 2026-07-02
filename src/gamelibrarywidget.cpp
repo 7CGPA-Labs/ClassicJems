@@ -34,7 +34,7 @@ GameLibraryWidget::GameLibraryWidget(QWidget *parent) : QWidget(parent) {
 
     // Header row
     QHBoxLayout *headerLayout = new QHBoxLayout();
-    m_titleLabel = new QLabel("Antigravity Launchpad", this);
+    m_titleLabel = new QLabel("ClassicJems Launchpad", this);
     m_titleLabel->setObjectName("HeaderTitle");
     
     m_browseButton = new QPushButton("Add Game ROM", this);

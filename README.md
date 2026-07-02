@@ -1,6 +1,6 @@
-# RetroFuse: C++/Qt J2ME & Symbian Desktop Emulator
+# ClassicJems: C++/Qt J2ME & Symbian Desktop Emulator
 
-RetroFuse (Antigravity) is a high-performance desktop emulation platform for J2ME and Symbian mobile application archives, built natively using **C++17** and the **Qt6 framework**. By combining UI view tracking and execution engines inside a single runtime ecosystem, it provides native instruction interpretation loops without garbage collection or intermediate translation lags.
+ClassicJems is a high-performance desktop emulation platform for J2ME and Symbian mobile application archives, built natively using **C++17** and the **Qt6 framework**. By combining UI view tracking and execution engines inside a single runtime ecosystem, it provides native instruction interpretation loops without garbage collection or intermediate translation lags.
 
 ---
 
@@ -9,7 +9,7 @@ RetroFuse (Antigravity) is a high-performance desktop emulation platform for J2M
 Layout of the folders and files in the repository:
 
 ```text
-retrofuse-qt/
+classicjems/
 ├── CMakeLists.txt              # Unified build rules for Windows and Linux
 ├── README.md                   # Setup guide and compilation workflows
 ├── src/                        # Core C++ Application Source
