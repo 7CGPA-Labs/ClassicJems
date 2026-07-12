@@ -15,8 +15,8 @@ if command -v apt-get &> /dev/null; then
   echo "Debian/Ubuntu detected. Installing dependencies..."
   $SUDO apt-get update -y
   $SUDO apt-get install -y cmake build-essential \
-    qt6-base-dev qt6-declarative-dev extra-cmake-modules \
-    liblxqt-dev libkf6plasma-dev libxfce4panel-2.0-dev libsdl2-dev
+    qt6-base-dev qt6-declarative-dev qtbase5-dev qtdeclarative5-dev extra-cmake-modules \
+    liblxqt1-dev libkf5plasma-dev libxfce4panel-2.0-dev libsdl2-dev
 elif command -v pacman &> /dev/null; then
   echo "Arch Linux detected. Installing dependencies..."
   $SUDO pacman -Sy --noconfirm cmake gcc make \

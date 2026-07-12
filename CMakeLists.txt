@@ -38,6 +38,7 @@ endif()
 # 1. PLATFORM DEPENDENCY LOOKUPS
 # ==========================================
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui OpenGLWidgets Qml)
+find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL Qml QUIET)
 find_package(SDL2 REQUIRED)
 find_package(PkgConfig REQUIRED)
 
@@ -51,7 +52,7 @@ endif()
 pkg_check_modules(XFCE4_PANEL QUIET libxfce4panel-2.0)
 pkg_check_modules(GTK3 QUIET gtk+-3.0)
 
-# Shared sources for Qt6 widgets and player
+# Shared sources for Qt widgets and player
 set(SHARED_SOURCES
     src/gamelibrarywidget.cpp
     src/gamelibrarywidget.h
@@ -60,7 +61,7 @@ set(SHARED_SOURCES
 )
 
 # ==========================================
-# 2. STANDALONE PLAYER TARGET
+# 2. STANDALONE PLAYER TARGET (Uses Qt6)
 # ==========================================
 add_executable(classicjems-player src/player/main.cpp ${SHARED_SOURCES})
 target_link_libraries(classicjems-player PRIVATE
@@ -82,7 +83,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # ==========================================
-# 3. LXQT PANEL PLUGIN TARGET
+# 3. LXQT PANEL PLUGIN TARGET (Matches LXQt's Qt version)
 # ==========================================
 if(LxQtPanel_FOUND)
     message(STATUS "LXQt Panel development files found. Building LXQt plugin...")
@@ -91,13 +92,26 @@ if(LxQtPanel_FOUND)
         src/lxqt-plugin/plugin-classicjems.h
         ${SHARED_SOURCES}
     )
-    target_link_libraries(plugin-classicjems PRIVATE
-        LxQt::Panel
-        Qt6::Core
-        Qt6::Widgets
-        Qt6::Gui
-        Qt6::OpenGLWidgets
-    )
+    
+    # Check if LXQt uses Qt6 or Qt5
+    if(TARGET Qt6::Widgets)
+        target_link_libraries(plugin-classicjems PRIVATE
+            LxQt::Panel
+            Qt6::Core
+            Qt6::Widgets
+            Qt6::Gui
+            Qt6::OpenGLWidgets
+        )
+    elseif(Qt5_FOUND)
+        target_link_libraries(plugin-classicjems PRIVATE
+            LxQt::Panel
+            Qt5::Core
+            Qt5::Widgets
+            Qt5::Gui
+            Qt5::OpenGL
+        )
+    endif()
+    
     if(TARGET SDL2::SDL2)
         target_link_libraries(plugin-classicjems PRIVATE SDL2::SDL2)
     endif()
@@ -110,10 +124,10 @@ if(LxQtPanel_FOUND)
 endif()
 
 # ==========================================
-# 4. KDE PLASMA PLASMOID TARGET
+# 4. KDE PLASMA PLASMOID TARGET (Qt6 for Plasma 6, Qt5 for Plasma 5)
 # ==========================================
-if(KF6Plasma_FOUND OR KF5Plasma_FOUND)
-    message(STATUS "KDE Plasma development files found. Building Plasmoid plugin...")
+if(KF6Plasma_FOUND)
+    message(STATUS "KDE Plasma 6 development files found. Building Plasmoid plugin...")
     add_library(classicjems_qmlplugin SHARED
         src/kde-plasmoid/classicjems_qmlplugin.cpp
         src/kde-plasmoid/classicjems_qmlplugin.h
@@ -123,6 +137,18 @@ if(KF6Plasma_FOUND OR KF5Plasma_FOUND)
         Qt6::Core
         Qt6::Qml
         Qt6::Widgets
+    )
+elseif(KF5Plasma_FOUND AND Qt5_FOUND)
+    message(STATUS "KDE Plasma 5 development files found. Building Plasmoid plugin...")
+    add_library(classicjems_qmlplugin SHARED
+        src/kde-plasmoid/classicjems_qmlplugin.cpp
+        src/kde-plasmoid/classicjems_qmlplugin.h
+        ${SHARED_SOURCES}
+    )
+    target_link_libraries(classicjems_qmlplugin PRIVATE
+        Qt5::Core
+        Qt5::Qml
+        Qt5::Widgets
     )
 endif()
 

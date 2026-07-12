@@ -61,4 +61,3 @@ void ClassicJemsPlugin::showMenu() {
 
 // Export the plugin macro
 LXQT_PANEL_PLUGIN(ClassicJemsPlugin)
-#include "moc_plugin-classicjems.cpp"
