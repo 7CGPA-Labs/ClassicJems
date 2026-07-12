@@ -183,7 +183,7 @@ endif()
 # A. Compile and Link EKA2L1 (Symbian Engine)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/eka2l1/CMakeLists.txt")
     add_subdirectory(third_party/eka2l1)
-    target_link_libraries(classicjems-player PRIVATE eka2l1_core)
+    target_link_libraries(classicjems-player PRIVATE epoc)
     target_include_directories(classicjems-player PRIVATE third_party/eka2l1/include)
 endif()
 
