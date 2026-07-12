@@ -1,0 +1,23 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "gagan@example.com",
+                "Name": "ClassicJems Developer"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "Launch classic J2ME & Symbian games from your desktop or taskbar.",
+        "Icon": "media-playback-start",
+        "Id": "org.kde.classicjems",
+        "License": "GPL-3.0-or-later",
+        "Name": "ClassicJems Launcher",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "1.0.0"
+    },
+    "Plasma": {
+        "API": "declarativeappletscript"
+    }
+}

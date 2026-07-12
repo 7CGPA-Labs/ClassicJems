@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=LXQtPanel/Plugin
+Name=ClassicJems Launcher
+Comment=Launch classic J2ME and Symbian mobile games from your taskbar panel.
+Icon=media-playback-start

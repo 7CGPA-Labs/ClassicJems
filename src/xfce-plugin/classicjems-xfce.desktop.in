@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=X-XFCE-PanelPlugin
+Name=ClassicJems Launcher
+Comment=Play classic J2ME and Symbian mobile games from your panel.
+Icon=media-playback-start
+X-XFCE-Module=classicjems-xfce
+X-XFCE-Unique=true

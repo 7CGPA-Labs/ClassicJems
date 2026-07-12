@@ -1,0 +1,35 @@
+name: Linux Plugins Build CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential \
+          qt6-base-dev qt6-declarative-dev extra-cmake-modules \
+          liblxqt-dev libkf6plasma-dev libxfce4panel-2.0-dev libsdl2-dev
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+
+    - name: Build Plugins
+      run: |
+        cd build
+        cmake --build . --config Release
