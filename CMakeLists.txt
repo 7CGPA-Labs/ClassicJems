@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Define project metadata and force native C++ compilation tracking
-project(ClassicJems VERSION 1.0.0 LANGUAGES CXX)
+project(ClassicJems VERSION 1.0.0 LANGUAGES C CXX)
 
 # Enforce the C++17 standard (strictly required by modern Qt6 core architectures) [cite: 275, 278]
 set(CMAKE_CXX_STANDARD 17)
