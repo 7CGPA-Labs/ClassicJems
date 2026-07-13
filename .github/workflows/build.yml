@@ -49,3 +49,39 @@ jobs:
             exit 1
           fi
         done
+
+    - name: Package Artifacts
+      run: |
+        mkdir -p dist/bin
+        mkdir -p dist/lxqt-plugin
+        mkdir -p dist/kde-plasmoid/contents/ui
+        mkdir -p dist/xfce-plugin
+        
+        # Copy Player
+        PLAYER_PATH=$(find build -name "classicjems-player" -type f)
+        [ -n "$PLAYER_PATH" ] && cp "$PLAYER_PATH" dist/bin/
+        
+        # Copy LXQt Plugin
+        LXQT_LIB=$(find build -name "libplugin-classicjems.so" -type f)
+        [ -n "$LXQT_LIB" ] && cp "$LXQT_LIB" dist/lxqt-plugin/
+        [ -f "build/classicjems.desktop" ] && cp "build/classicjems.desktop" dist/lxqt-plugin/
+        
+        # Copy KDE Plasmoid
+        KDE_LIB=$(find build -name "libclassicjems_qmlplugin.so" -type f)
+        [ -n "$KDE_LIB" ] && cp "$KDE_LIB" dist/kde-plasmoid/
+        [ -f "src/kde-plasmoid/metadata.json" ] && cp "src/kde-plasmoid/metadata.json" dist/kde-plasmoid/
+        [ -f "src/kde-plasmoid/contents/ui/main.qml" ] && cp "src/kde-plasmoid/contents/ui/main.qml" dist/kde-plasmoid/contents/ui/
+        
+        # Copy XFCE Plugin
+        XFCE_LIB=$(find build -name "libclassicjems-xfce.so" -type f)
+        [ -n "$XFCE_LIB" ] && cp "$XFCE_LIB" dist/xfce-plugin/
+        [ -f "build/classicjems-xfce.desktop" ] && cp "build/classicjems-xfce.desktop" dist/xfce-plugin/
+        
+        echo "Packaged distribution tree:"
+        ls -R dist
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: classicjems-linux-plugins
+        path: dist/
