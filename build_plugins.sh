@@ -16,7 +16,7 @@ if command -v apt-get &> /dev/null; then
   $SUDO apt-get update -y
   $SUDO apt-get install -y cmake build-essential \
     qt6-base-dev qt6-declarative-dev qt6-base-private-dev qtbase5-dev qtdeclarative5-dev qtbase5-private-dev extra-cmake-modules \
-    liblxqt1-dev libkf5plasma-dev libxfce4panel-2.0-dev libsdl2-dev
+    liblxqt1-dev libkf5plasma-dev libxfce4panel-2.0-dev libsdl2-dev xvfb
 elif command -v pacman &> /dev/null; then
   echo "Arch Linux detected. Installing dependencies..."
   $SUDO pacman -Sy --noconfirm cmake gcc make \

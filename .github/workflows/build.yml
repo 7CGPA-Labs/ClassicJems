@@ -21,7 +21,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake build-essential \
           qt6-base-dev qt6-declarative-dev qt6-base-private-dev qtbase5-dev qtdeclarative5-dev qtbase5-private-dev extra-cmake-modules \
-          liblxqt1-dev libkf5plasma-dev libxfce4panel-2.0-dev libsdl2-dev
+          liblxqt1-dev libkf5plasma-dev libxfce4panel-2.0-dev libsdl2-dev xvfb
 
     - name: Configure CMake
       run: |
@@ -33,3 +33,19 @@ jobs:
       run: |
         cd build
         cmake --build . --config Release
+
+    - name: Test Plugins and Player
+      run: |
+        PLAYER_PATH=$(find build -name "classicjems-player" -type f)
+        echo "Found player at: $PLAYER_PATH"
+        xvfb-run --auto-servernum "$PLAYER_PATH" --test
+        
+        find build -name "*.so" -type f | while read -r lib; do
+          echo "Verifying symbols for: $lib"
+          LDD_OUT=$(ldd -r "$lib" 2>&1)
+          echo "$LDD_OUT"
+          if echo "$LDD_OUT" | grep -q "undefined symbol"; then
+            echo "Error: Undefined symbols found in $lib!"
+            exit 1
+          fi
+        done
