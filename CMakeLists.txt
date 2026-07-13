@@ -182,6 +182,10 @@ endif()
 
 # A. Compile and Link EKA2L1 (Symbian Engine)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/eka2l1/CMakeLists.txt")
+    # Disable building EKA2L1 tools and tests to avoid compile errors and speed up build times
+    set(EKA2L1_BUILD_TESTS OFF CACHE BOOL "Build EKA2L1 tests" FORCE)
+    set(EKA2L1_BUILD_TOOLS OFF CACHE BOOL "Build EKA2L1 tools" FORCE)
+
     add_subdirectory(third_party/eka2l1)
     target_link_libraries(classicjems-player PRIVATE epoc)
     target_include_directories(classicjems-player PRIVATE third_party/eka2l1/include)
