@@ -5,15 +5,15 @@
 #include <QStyle>
 #include <QPoint>
 
-ClassicJemsPlugin::ClassicJemsPlugin(const LXQtPanelPluginPluginInfo &info, QWidget *parent)
-    : LXQtPanelPlugin(info, parent),
-      m_button(new QToolButton(this)),
+ClassicJemsPlugin::ClassicJemsPlugin(const ILXQtPanelPluginStartupInfo &startupInfo)
+    : ILXQtPanelPlugin(startupInfo),
+      m_button(new QToolButton()),
       m_menu(nullptr),
       m_libraryWidget(nullptr),
       m_menuAction(nullptr)
 {
     m_button->setObjectName("ClassicJemsButton");
-    m_button->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    m_button->setIcon(m_button->style()->standardIcon(QStyle::SP_MediaPlay));
     m_button->setToolTip("ClassicJems J2ME Launcher");
     m_button->setAutoRaise(true);
 
@@ -28,7 +28,7 @@ QWidget *ClassicJemsPlugin::widget() {
     return m_button;
 }
 
-QString ClassicJemsPlugin::themeGroup() const {
+QString ClassicJemsPlugin::themeId() const {
     return "ClassicJems";
 }
 
@@ -59,5 +59,16 @@ void ClassicJemsPlugin::showMenu() {
     m_menu->exec(m_button->mapToGlobal(QPoint(0, m_button->height())));
 }
 
-// Export the plugin macro
-LXQT_PANEL_PLUGIN(ClassicJemsPlugin)
+// Export the plugin factory
+class ClassicJemsPluginLibrary : public QObject, public ILXQtPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "lxqt.org/Panel/PluginInterface/3.0")
+    Q_INTERFACES(ILXQtPanelPluginLibrary)
+public:
+    ILXQtPanelPlugin *instance(const ILXQtPanelPluginStartupInfo &startupInfo) const override {
+        return new ClassicJemsPlugin(startupInfo);
+    }
+};
+
+#include "plugin-classicjems.moc"

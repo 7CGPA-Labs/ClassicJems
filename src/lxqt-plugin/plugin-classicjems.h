@@ -1,22 +1,22 @@
 #pragma once
 
-#include <lxqtpanelplugin.h>
+#include <lxqt/ilxqtpanelplugin.h>
 #include <QIcon>
 #include <QToolButton>
 #include <QMenu>
 #include <QWidgetAction>
 #include "../gamelibrarywidget.h"
 
-class ClassicJemsPlugin : public LXQtPanelPlugin {
+class ClassicJemsPlugin : public QObject, public ILXQtPanelPlugin {
     Q_OBJECT
 
 public:
-    explicit ClassicJemsPlugin(const LXQtPanelPluginPluginInfo &info, QWidget *parent = nullptr);
+    explicit ClassicJemsPlugin(const ILXQtPanelPluginStartupInfo &startupInfo);
     ~ClassicJemsPlugin();
 
-    // Reimplemented from LXQtPanelPlugin
+    // Reimplemented from ILXQtPanelPlugin
     QWidget *widget() override;
-    QString themeGroup() const override;
+    QString themeId() const override;
 
 protected:
     void showMenu();

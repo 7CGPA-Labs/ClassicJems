@@ -85,32 +85,22 @@ endif()
 # ==========================================
 # 3. LXQT PANEL PLUGIN TARGET (Matches LXQt's Qt version)
 # ==========================================
-if(LxQtPanel_FOUND)
-    message(STATUS "LXQt Panel development files found. Building LXQt plugin...")
+if(EXISTS "/usr/include/lxqt/ilxqtpanelplugin.h" AND Qt5_FOUND)
+    message(STATUS "LXQt Panel 1.x (Qt5) headers found. Building LXQt plugin...")
     add_library(plugin-classicjems SHARED
         src/lxqt-plugin/plugin-classicjems.cpp
         src/lxqt-plugin/plugin-classicjems.h
         ${SHARED_SOURCES}
     )
     
-    # Check if LXQt uses Qt6 or Qt5
-    if(TARGET Qt6::Widgets)
-        target_link_libraries(plugin-classicjems PRIVATE
-            LxQt::Panel
-            Qt6::Core
-            Qt6::Widgets
-            Qt6::Gui
-            Qt6::OpenGLWidgets
-        )
-    elseif(Qt5_FOUND)
-        target_link_libraries(plugin-classicjems PRIVATE
-            LxQt::Panel
-            Qt5::Core
-            Qt5::Widgets
-            Qt5::Gui
-            Qt5::OpenGL
-        )
-    endif()
+    target_include_directories(plugin-classicjems PRIVATE /usr/include/lxqt)
+    target_link_libraries(plugin-classicjems PRIVATE
+        Qt5::Core
+        Qt5::Widgets
+        Qt5::Gui
+        Qt5::OpenGL
+        lxqt
+    )
     
     if(TARGET SDL2::SDL2)
         target_link_libraries(plugin-classicjems PRIVATE SDL2::SDL2)
